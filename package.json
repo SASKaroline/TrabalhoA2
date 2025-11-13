@@ -1,0 +1,29 @@
+{
+  "name": "trabalhoa2",
+  "version": "1.0.0",
+  "description": "E-commerce de PetShop Online",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SASKaroline/TrabalhoA2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/SASKaroline/TrabalhoA2/issues"
+  },
+  "homepage": "https://github.com/SASKaroline/TrabalhoA2#readme",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "mongoose": "^8.19.3",
+    "nodemon": "^3.1.11",
+    "yup": "^1.7.1"
+  }
+}

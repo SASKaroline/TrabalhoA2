@@ -5,7 +5,7 @@ const schema = new mongoose.Schema(
     nome: { type: String, required: true, trim: true },
     descricao: { type: String, required: true },
     preco: { type: Number, required: true, min: 0.01 },
-    duracao: { type: NUmber, required: true, min: 20  },
+    duracao: { type: Number, required: true, min: 20  },
     
     agendamento: {
       type: mongoose.Schema.Types.ObjectId,

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const pedidoModel = require('../models/pedido');
-const { validarPedido, validarAtualizacaoPedido } = require('../validators/PedidoValidator');
+const { validarPedido, validarAtualizacaoPedido } = require('../validators/pedidoSchema');
 const { validarId } = require('../validators/IDValidator');
 
 // GET - listar todos os pedidos
@@ -28,13 +28,13 @@ router.get('/pedidos/:id', validarId, async (req, res) => {
 });
 
 // POST - criar novo pedido
-router.post('/pedidos', validarPedido, async (req, res) => {
+router.post('/pedidos', criarPedidoSchema, async (req, res) => {
   const novoPedido = await pedidoModel.create(req.body);
   res.status(201).json(novoPedido);
 });
 
 // PUT - atualizar pedido existente
-router.put('/pedidos/:id', validarId, validarAtualizacaoPedido, async (req, res) => {
+router.put('/pedidos/:id', validarId, atualizarPedidoSchema, async (req, res) => {
   const pedidoAtualizado = await pedidoModel.findByIdAndUpdate(
     req.params.id,
     req.body,

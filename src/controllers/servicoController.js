@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const servicoModel = require('../models/servico');
-const { validarServico, validarAtualizacaoServico } = require('../validators/ServicoValidator');
+const { validarServico, validarAtualizacaoServico } = require('../validators/servicoSchema');
 const { validarId } = require('../validators/IDValidator');
 
 // GET - listar todos os serviços
@@ -24,13 +24,13 @@ router.get('/servicos/:id', validarId, async (req, res) => {
 });
 
 // POST - criar novo serviço
-router.post('/servicos', validarServico, async (req, res) => {
+router.post('/servicos', criarServicoSchema, async (req, res) => {
   const novoServico = await servicoModel.create(req.body);
   res.status(201).json(novoServico);
 });
 
 // PUT - atualizar serviço existente
-router.put('/servicos/:id', validarId, validarAtualizacaoServico, async (req, res) => {
+router.put('/servicos/:id', validarId, atualizarServicoSchema, async (req, res) => {
   const servicoAtualizado = await servicoModel.findByIdAndUpdate(
     req.params.id,
     req.body,

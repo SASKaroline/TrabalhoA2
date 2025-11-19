@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const avaliacaoModel = require('../models/avaliacao');
-const { validarAvaliacao, validarAtualizacaoAvaliacao } = require('../validators/AvaliacaoValidator');
+const { validarAvaliacao, validarAtualizacaoAvaliacao } = require('../validators/avaliacaoSchema');
 const { validarId } = require('../validators/IDValidator');
 
 // GET - listar todas as avaliações
@@ -25,13 +25,13 @@ router.get('/avaliacoes/:id', validarId, async (req, res) => {
 });
 
 // POST - criar nova avaliação
-router.post('/avaliacoes', validarAvaliacao, async (req, res) => {
+router.post('/avaliacoes', criarAvaliacaoSchema, async (req, res) => {
   const novaAvaliacao = await avaliacaoModel.create(req.body);
   res.status(201).json(novaAvaliacao);
 });
 
 // PUT - atualizar avaliação existente
-router.put('/avaliacoes/:id', validarId, validarAtualizacaoAvaliacao, async (req, res) => {
+router.put('/avaliacoes/:id', validarId, atualizarAvaliacaoSchema, async (req, res) => {
   const avaliacaoAtualizada = await avaliacaoModel.findByIdAndUpdate(
     req.params.id,
     req.body,

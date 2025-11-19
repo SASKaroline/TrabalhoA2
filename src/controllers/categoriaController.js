@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const categoriaModel = require('../models/categoria');
-const { validarCategoria, validarAtualizacaoCategoria } = require('../validators/CategoriaValidator');
+const { validarCategoria, validarAtualizacaoCategoria } = require('../validators/categoriaSchema');
 const { validarId } = require('../validators/IDValidator');
 
 // GET - listar todas as categorias
@@ -23,13 +23,13 @@ router.get('/categorias/:id', validarId, async (req, res) => {
 });
 
 // POST - criar nova categoria
-router.post('/categorias', validarCategoria, async (req, res) => {
+router.post('/categorias', criarCategoriaSchema, async (req, res) => {
   const novaCategoria = await categoriaModel.create(req.body);
   res.status(201).json(novaCategoria);
 });
 
 // PUT - atualizar categoria existente
-router.put('/categorias/:id', validarId, validarAtualizacaoCategoria, async (req, res) => {
+router.put('/categorias/:id', validarId, atualizarCategoriaSchema, async (req, res) => {
   const categoriaAtualizada = await categoriaModel.findByIdAndUpdate(
     req.params.id,
     req.body,

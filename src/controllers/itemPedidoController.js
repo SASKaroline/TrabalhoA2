@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const itemModel = require('../models/item');
-const { validarItem, validarAtualizacaoItem } = require('../validators/ItemValidator');
+const { validarItem, validarAtualizacaoItem } = require('../validators/itemPedidoSchema');
 const { validarId } = require('../validators/IDValidator');
 
 // GET - listar todos os itens
@@ -24,13 +24,13 @@ router.get('/itens/:id', validarId, async (req, res) => {
 });
 
 // POST - criar novo item
-router.post('/itens', validarItem, async (req, res) => {
+router.post('/itens', criarPedidoSchema, async (req, res) => {
   const novoItem = await itemModel.create(req.body);
   res.status(201).json(novoItem);
 });
 
 // PUT - atualizar item existente
-router.put('/itens/:id', validarId, validarAtualizacaoItem, async (req, res) => {
+router.put('/itens/:id', validarId, atualizarPedidoSchema, async (req, res) => {
   const itemAtualizado = await itemModel.findByIdAndUpdate(
     req.params.id,
     req.body,

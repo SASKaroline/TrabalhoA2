@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const petModel = require('../models/pet');
-const { validarPet, validarAtualizacaoPet } = require('../validators/PetValidator');
+const { validarPet, validarAtualizacaoPet } = require('../validators/petSchema');
 const { validarId } = require('../validators/IDValidator');
 
 // GET - listar todos os pets
@@ -24,13 +24,13 @@ router.get('/pets/:id', validarId, async (req, res) => {
 });
 
 // POST - criar novo pet
-router.post('/pets', validarPet, async (req, res) => {
+router.post('/pets', criarPetsSchema, async (req, res) => {
   const novoPet = await petModel.create(req.body);
   res.status(201).json(novoPet);
 });
 
 // PUT - atualizar pet existente
-router.put('/pets/:id', validarId, validarAtualizacaoPet, async (req, res) => {
+router.put('/pets/:id', validarId, atualizarPetsSchema, async (req, res) => {
   const petAtualizado = await petModel.findByIdAndUpdate(
     req.params.id,
     req.body,

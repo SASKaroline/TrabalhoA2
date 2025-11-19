@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const pagamentoModel = require('../models/pagamento');
-const { validarPagamento, validarAtualizacaoPagamento } = require('../validators/PagamentoValidator');
+const { validarPagamento, validarAtualizacaoPagamento } = require('../validators/pagamentoSchema');
 const { validarId } = require('../validators/IDValidator');
 
 // GET - listar todos os pagamentos
@@ -25,13 +25,13 @@ router.get('/pagamentos/:id', validarId, async (req, res) => {
 });
 
 // POST - criar novo pagamento
-router.post('/pagamentos', validarPagamento, async (req, res) => {
+router.post('/pagamentos', criarPagamentoSchema, async (req, res) => {
   const novoPagamento = await pagamentoModel.create(req.body);
   res.status(201).json(novoPagamento);
 });
 
 // PUT - atualizar pagamento existente
-router.put('/pagamentos/:id', validarId, validarAtualizacaoPagamento, async (req, res) => {
+router.put('/pagamentos/:id', validarId, atualizarPagamentoSchema, async (req, res) => {
   const pagamentoAtualizado = await pagamentoModel.findByIdAndUpdate(
     req.params.id,
     req.body,

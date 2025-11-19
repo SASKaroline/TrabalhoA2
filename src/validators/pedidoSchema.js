@@ -45,4 +45,29 @@ const atualizarPedidoSchema = yup.object().shape({
       .typeError('dataPedido deve ser uma data válida')
       .notRequired()
   });
+
+  function validarCriacao(req, res, next) {
+    criarPedidoSchema
+      .validate(req.body, { abortEarly: false })
+      .then(() => next())
+      .catch(err => {
+        const errors = err.inner?.length ? err.inner.map(e => e.message) : [err.message];
+        return res.status(400).json({ errors });
+      });
+  }
+  
+  function validarAtualizacao(req, res, next) {
+    atualizarPedidoSchema
+      .validate(req.body, { abortEarly: false })
+      .then(() => next())
+      .catch(err => {
+        const errors = err.inner?.length ? err.inner.map(e => e.message) : [err.message];
+        return res.status(400).json({ errors });
+      });
+  }
+  
+  module.exports = {
+    validarCriacao,
+    validarAtualizacao
+  };
   

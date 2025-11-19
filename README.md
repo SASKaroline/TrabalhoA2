@@ -1,6 +1,7 @@
 # TrabalhoA2
 
 **Nome do Projeto**
+
 E-commerce PetShop Online – Plataforma B2C
 
 # Tecnologias Utilizadas
@@ -60,33 +61,57 @@ A plataforma foi desenvolvida para atender às demandas de um e-commerce de PetS
 
 # Endpoints – Exemplos
 **Usuários**
+
 *POST /usuarios*
+
  Request body:
+ 
 {
+
   "nome": "Maria Silva",
+  
   "cpf": "12345678900",
+  
   "email": "maria@email.com",
+  
   "senha": "123456",
+  
   "telefone": "61999999999"
+  
 }
 
 *GET /usuarios/:id*
+
  Response:
+ 
 {
+
   "id": "6710d3...",
+  
   "nome": "Maria Silva",
+  
   "email": "maria@email.com"
+  
 }
 
 **Pets**
+
 *POST /pets*
+
 {
+
   "nome": "Thor",
+  
   "especie": "Cachorro",
+  
   "raca": "Labrador",
+  
   "idade": 3,
+  
   "peso": 18,
+  
   "usuarioId": "6710d3..."
+  
 }
 
 **Agendamentos**

@@ -1,7 +1,5 @@
 const yup = require('yup');
 
-const objectIdRegex = /^[0-9a-fA-F]{24}$/;
-
 const criarPedidoSchema = yup.object().shape({
   
   total: yup

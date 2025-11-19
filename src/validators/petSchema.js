@@ -1,6 +1,5 @@
 const yup = require("yup");
 
-
 const objectIdRegex = /^[0-9a-fA-F]{24}$/;
 
 const criarPetsSchema = yup.object().shape({

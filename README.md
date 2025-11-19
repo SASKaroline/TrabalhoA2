@@ -207,45 +207,38 @@ Representa todas as 10 collections e seus relacionamentos.
 **Usuários**
 
 Clientes e administradores; relaciona com pets, pedidos e avaliações.
+
 **Pets**
 
 Pertencem a um usuário; usados em agendamentos.
-
 
 **Categorias**
 
 Organizam produtos por tipo.
 
-
 **Produtos**
 
 Vinculados a categorias; compõem pedidos e avaliações.
-
 
 **Serviços**
 
 Banho, tosa, vacinação, consultas.
 
-
 **Agendamentos**
 
 Relacionam usuário + pet + serviço.
-
 
 **Pedidos**
 
 Associados ao usuário; contêm itens.
 
-
 **ItensPedido**
 
 Relacionam produtos e pedidos.
 
-
 **Avaliações**
 
 Relacionam usuário e produto.
-
 
 **Pagamentos**
 

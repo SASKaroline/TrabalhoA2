@@ -199,6 +199,7 @@ O sistema integra e-commerce de produtos, agendamento de serviços e gestão de 
 
 # Collections e Relacionamentos
 O diagrama do banco de dados encontra-se em:
+
 /docs/diagrama-banco.png
 
 Representa todas as 10 collections e seus relacionamentos.

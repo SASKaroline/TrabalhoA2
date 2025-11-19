@@ -115,19 +115,28 @@ A plataforma foi desenvolvida para atender às demandas de um e-commerce de PetS
 }
 
 **Agendamentos**
+
 *POST /agendamentos*
+
 {
+  
   "data": "2025-02-20",
+  
   "hora": "14:00",
+  
   "petId": "6721f3...",
+  
   "servicoId": "6721e9...",
+  
   "usuarioId": "6710d3..."
+
 }
 
 A coleção completa de endpoints está disponível no arquivo Postman exportado.
 
 # Diagrama de Modelagem
 O diagrama do banco de dados encontra-se em:
+
 /docs/PETSHOP ONLINE E-COMMERCE.png
 
 Representa todas as 10 collections e seus relacionamentos.
@@ -195,32 +204,60 @@ O diagrama do banco de dados encontra-se em:
 Representa todas as 10 collections e seus relacionamentos.
 
 # Collections e Relacionamentos
-*Usuários*
+**Usuários**
+
 Clientes e administradores; relaciona com pets, pedidos e avaliações.
-*Pets*
+**Pets**
+
 Pertencem a um usuário; usados em agendamentos.
-*Categorias*
+
+
+**Categorias**
+
 Organizam produtos por tipo.
-*Produtos*
+
+
+**Produtos**
+
 Vinculados a categorias; compõem pedidos e avaliações.
-*Serviços*
+
+
+**Serviços**
+
 Banho, tosa, vacinação, consultas.
-*Agendamentos*
+
+
+**Agendamentos**
+
 Relacionam usuário + pet + serviço.
-*Pedidos*
+
+
+**Pedidos**
+
 Associados ao usuário; contêm itens.
-*ItensPedido*
+
+
+**ItensPedido**
+
 Relacionam produtos e pedidos.
-*Avaliações*
+
+
+**Avaliações**
+
 Relacionam usuário e produto.
-*Pagamentos*
+
+
+**Pagamentos**
+
 Vinculados ao pedido e ao usuário.
 
 # Instalação, Configuração e Execução
 1. Instalação das dependências
+
 npm install
 
 2. Configuração do .env
+
 Criar um .env baseado no .env.example:
 
 MONGO_URI= mongodb+srv://usuario:<db_password>@cluster0.gfi4s0j.mongodb.net/
@@ -236,16 +273,22 @@ http://localhost:3000
 
 # Comunicação com o Banco de Dados
 A configuração da conexão está em:
+
 /src/index.js
 
 A comunicação utiliza Mongoose para modelagem, validação, tratamento de erros e relacionamentos via populate.
 
 # Integrantes do Projeto
 Nome              | GitHub
+
 Karol             | SASKaroline
+
 Yasmin            | Yassanalitics
+
 Ygor              | Yguin77
+
 Alex              | AraujoS2025
+
 Davi              | davimoreira061
 
 

@@ -63,6 +63,7 @@ A plataforma foi desenvolvida para atender às demandas de um e-commerce de PetS
 **Usuários**
 
 *POST /usuarios*
+
 Request body:
  
 {

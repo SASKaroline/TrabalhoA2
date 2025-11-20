@@ -1,13 +1,10 @@
-
+const dotenv = require('dotenv');
+dotenv.config(); 
 const express = require('express')
 const app = express()
-
-
 app.use(express.json())
-
 // conexão com o banco de dados
 const mongoose = require('mongoose')
-const dotenv = require('dotenv').config()
 
 const DB_HOST = process.env.DB_HOST
 const DB_USER = process.env.DB_USER
@@ -25,35 +22,35 @@ mongoose.connect(url)
   })
 
 // rotas
-const agendamentoController = require('./controllers/agendamentoController');
-app.use(agendamentoController);
+const AgendamentoController = require('./controllers/AgendamentoController');
+app.use(AgendamentoController);
 
 const avaliacaoController = require('./controllers/avaliacaoController');
 app.use(avaliacaoController);
 
-const categoriaController = require('./controllers/categoriaController');
-app.use(categoriaController);
+const CategoriaController = require('./controllers/CategoriaController');
+app.use(CategoriaController);
 
-const itemPedidoController = require('./controllers/itemPedidoController');
-app.use(itemPedidoController);
+const ItemPedidoController = require('./controllers/ItemPedidoController');
+app.use(ItemPedidoController);
 
-const pagamentoController = require('./controllers/pagamentoController');
-app.use(pagamentoController);
+const PagamentoController = require('./controllers/PagamentoController');
+app.use(PagamentoController);
 
-const pedidoController = require('./controllers/pedidoController');
-app.use(pedidoController);
+const PedidoController = require('./controllers/PedidoController');
+app.use(PedidoController);
 
-const petController = require('./controllers/petController');
-app.use(petController);
+const PetController = require('./controllers/PetController');
+app.use(PetController);
 
-const produtoController = require('./controllers/produtoController');
-app.use(produtoController);
+const ProdutoController = require('./controllers/ProdutoController');
+app.use(ProdutoController);
 
-const servicoController = require('./controllers/servicoController');
-app.use(servicoController);
+const ServicoController = require('./controllers/ServicoController');
+app.use(ServicoController);
 
-const usuarioController = require('./controllers/usuarioController');
-app.use(usuarioController);
+const UsuarioController = require('./controllers/UsuarioController');
+app.use(UsuarioController);
 
 app.listen(3000, () => {
   console.log("E-commerce Petshop Rodando em http://localhost:3000")

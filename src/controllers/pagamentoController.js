@@ -1,21 +1,21 @@
 const express = require('express');
 const router = express.Router();
 
-const Pagamentos = require('../models/pagamento');
-const { validarCriacao, validarAtualizacao } = require('../validators/pagamentoSchema');
+const PagamentoModel = require('../models/PagamentoModel');
+const { validarPagamento, validarAtualizacaoPagamento} = require('../validators/PagamentoValidator');
 const { validarId } = require('../validators/IDValidator');
 
 // GET - listar todos os pagamentos
 router.get('/pagamentos', async (req, res) => {
-  const pagamentos = await Pagamentos.find().populate(['Usuario', 'Pedido', 'Agendamento']);
+  const pagamentos = await PagamentoModel.find().populate(['usuario', 'pedido', 'agendamento']);
 
   res.json(pagamentos);
 });
 
 // GET - buscar pagamento por ID
 router.get('/pagamentos/:id', validarId, async (req, res) => {
-  const pagamento = await Pagamentos
-    .findById(req.params.id).populate(['Usuario', 'Pedido', 'Agendamento']);
+  const pagamento = await PagamentoModel
+    .findById(req.params.id).populate(['usuario', 'pedido', 'agendamento']);
 
   if (!pagamento) {
     return res.status(404).json({ error: 'Pagamento não encontrado' });
@@ -25,14 +25,14 @@ router.get('/pagamentos/:id', validarId, async (req, res) => {
 });
 
 // POST - criar novo pagamento
-router.post('/pagamentos', validarCriacao, async (req, res) => {
-  const novoPagamento = await Pagamentos.create(req.body);
+router.post('/pagamentos', validarPagamento, async (req, res) => {
+  const novoPagamento = await PagamentoModel.create(req.body);
   res.status(201).json(novoPagamento);
 });
 
 // PUT - atualizar pagamento existente
-router.put('/pagamentos/:id', validarId, validarAtualizacao, async (req, res) => {
-  const pagamentoAtualizado = await Pagamentos.findByIdAndUpdate(
+router.put('/pagamentos/:id', validarId, validarAtualizacaoPagamento, async (req, res) => {
+  const pagamentoAtualizado = await PagamentoModel.findByIdAndUpdate(
     req.params.id,
     req.body,
     { new: true }
@@ -47,7 +47,7 @@ router.put('/pagamentos/:id', validarId, validarAtualizacao, async (req, res) =>
 
 // DELETE - deletar pagamento
 router.delete('/pagamentos/:id', validarId, async (req, res) => {
-  const pagamentoDeletado = await Pagamentos.findByIdAndDelete(req.params.id);
+  const pagamentoDeletado = await PagamentoModel.findByIdAndDelete(req.params.id);
 
   if (!pagamentoDeletado) {
     return res.status(404).json({ error: 'Pagamento não encontrado' });

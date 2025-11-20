@@ -1,20 +1,20 @@
 const express = require('express');
 const router = express.Router();
 
-const Servicos = require('../models/servico');
-const { validarCriacao, validarAtualizacao } = require('../validators/servicoSchema');
+const ServicoModel = require('../models/ServicoModel');
+const { validarServico, validarAtualizacaoServico } = require('../validators/ServicoValidator');
 const { validarId } = require('../validators/IDValidator');
 
 // GET - listar todos os serviços
 router.get('/servicos', async (req, res) => {
-  const servicos = await Servicos.find().populate(['Categoria', 'Funcionario']);
+  const servicos = await ServicoModel.find().populate(['agendamento']);
   res.json(servicos);
 });
 
 // GET - buscar serviço por ID
 router.get('/servicos/:id', validarId, async (req, res) => {
-  const servico = await Servicos
-    .findById(req.params.id).populate(['Categoria', 'Funcionario']);
+  const servico = await ServicoModel
+    .findById(req.params.id).populate(['agendamento']);
 
   if (!servico) {
     return res.status(404).json({ error: 'Serviço não encontrado' });
@@ -24,14 +24,14 @@ router.get('/servicos/:id', validarId, async (req, res) => {
 });
 
 // POST - criar novo serviço
-router.post('/servicos', validarCriacao, async (req, res) => {
-  const novoServico = await Servicos.create(req.body);
+router.post('/servicos', validarServico, async (req, res) => {
+  const novoServico = await ServicoModel.create(req.body);
   res.status(201).json(novoServico);
 });
 
 // PUT - atualizar serviço existente
-router.put('/servicos/:id', validarId, validarAtualizacao, async (req, res) => {
-  const servicoAtualizado = await Servicos.findByIdAndUpdate(
+router.put('/servicos/:id', validarId, validarAtualizacaoServico, async (req, res) => {
+  const servicoAtualizado = await ServicoModel.findByIdAndUpdate(
     req.params.id,
     req.body,
     { new: true }
@@ -46,7 +46,7 @@ router.put('/servicos/:id', validarId, validarAtualizacao, async (req, res) => {
 
 // DELETE - deletar serviço
 router.delete('/servicos/:id', validarId, async (req, res) => {
-  const servicoDeletado = await servicoModel.findByIdAndDelete(req.params.id);
+  const servicoDeletado = await ServicoModel.findByIdAndDelete(req.params.id);
 
   if (!servicoDeletado) {
     return res.status(404).json({ error: 'Serviço não encontrado' });

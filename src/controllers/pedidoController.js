@@ -1,24 +1,24 @@
 const express = require('express');
 const router = express.Router();
 
-const Pedidos = require('../models/pedido');
-const { validarCriacao, validarAtualizacao } = require('../validators/pedidoSchema');
+const PedidoModel = require('../models/PedidoModel');
+const { validarPedido, validarAtualizacaoPedido} = require('../validators/PedidoValidator');
 const { validarId } = require('../validators/IDValidator');
 
 // GET - listar todos os pedidos
 router.get('/pedidos', async (req, res) => {
-  const pedidos = await Pedidos
+  const pedidos = await PedidoModel
     .find()
-    .populate(['Usuario', 'Itens', 'Pagamento', 'Servico', 'Pet']);
+    .populate(['Usuario', 'ItemPedido']);
 
   res.json(pedidos);
 });
 
 // GET - buscar pedido por ID
 router.get('/pedidos/:id', validarId, async (req, res) => {
-  const pedido = await Pedidos
+  const pedido = await PedidoModel
     .findById(req.params.id)
-    .populate(['Usuario', 'Itens', 'Pagamento', 'Servico', 'Pet']);
+    .populate(['Usuario', 'ItemPedido']);
 
   if (!pedido) {
     return res.status(404).json({ error: 'Pedido não encontrado' });
@@ -28,14 +28,14 @@ router.get('/pedidos/:id', validarId, async (req, res) => {
 });
 
 // POST - criar novo pedido
-router.post('/pedidos', validarCriacao, async (req, res) => {
-  const novoPedido = await Pedidos.create(req.body);
+router.post('/pedidos', validarPedido, async (req, res) => {
+  const novoPedido = await PedidoModel.create(req.body);
   res.status(201).json(novoPedido);
 });
 
 // PUT - atualizar pedido existente
-router.put('/pedidos/:id', validarId, validarAtualizacao, async (req, res) => {
-  const pedidoAtualizado = await Pedidos.findByIdAndUpdate(
+router.put('/pedidos/:id', validarId, validarAtualizacaoPedido, async (req, res) => {
+  const pedidoAtualizado = await PedidoModel.findByIdAndUpdate(
     req.params.id,
     req.body,
     { new: true }
@@ -50,7 +50,7 @@ router.put('/pedidos/:id', validarId, validarAtualizacao, async (req, res) => {
 
 // DELETE - deletar pedido
 router.delete('/pedidos/:id', validarId, async (req, res) => {
-  const pedidoDeletado = await Pedidos.findByIdAndDelete(req.params.id);
+  const pedidoDeletado = await PedidoModel.findByIdAndDelete(req.params.id);
 
   if (!pedidoDeletado) {
     return res.status(404).json({ error: 'Pedido não encontrado' });

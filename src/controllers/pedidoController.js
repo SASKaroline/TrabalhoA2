@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
 
-const pedidoModel = require('../models/pedido');
-const { validarPedido, validarAtualizacaoPedido } = require('../validators/pedidoSchema');
+const Pedidos = require('../models/pedido');
+const { validarCriacao, validarAtualizacao } = require('../validators/pedidoSchema');
 const { validarId } = require('../validators/IDValidator');
 
 // GET - listar todos os pedidos
 router.get('/pedidos', async (req, res) => {
-  const pedidos = await pedidoModel
+  const pedidos = await Pedidos
     .find()
     .populate(['Usuario', 'Itens', 'Pagamento', 'Servico', 'Pet']);
 
@@ -16,7 +16,7 @@ router.get('/pedidos', async (req, res) => {
 
 // GET - buscar pedido por ID
 router.get('/pedidos/:id', validarId, async (req, res) => {
-  const pedido = await pedidoModel
+  const pedido = await Pedidos
     .findById(req.params.id)
     .populate(['Usuario', 'Itens', 'Pagamento', 'Servico', 'Pet']);
 
@@ -28,14 +28,14 @@ router.get('/pedidos/:id', validarId, async (req, res) => {
 });
 
 // POST - criar novo pedido
-router.post('/pedidos', criarPedidoSchema, async (req, res) => {
-  const novoPedido = await pedidoModel.create(req.body);
+router.post('/pedidos', validarCriacao, async (req, res) => {
+  const novoPedido = await Pedidos.create(req.body);
   res.status(201).json(novoPedido);
 });
 
 // PUT - atualizar pedido existente
-router.put('/pedidos/:id', validarId, atualizarPedidoSchema, async (req, res) => {
-  const pedidoAtualizado = await pedidoModel.findByIdAndUpdate(
+router.put('/pedidos/:id', validarId, validarAtualizacao, async (req, res) => {
+  const pedidoAtualizado = await Pedidos.findByIdAndUpdate(
     req.params.id,
     req.body,
     { new: true }
@@ -50,7 +50,7 @@ router.put('/pedidos/:id', validarId, atualizarPedidoSchema, async (req, res) =>
 
 // DELETE - deletar pedido
 router.delete('/pedidos/:id', validarId, async (req, res) => {
-  const pedidoDeletado = await pedidoModel.findByIdAndDelete(req.params.id);
+  const pedidoDeletado = await Pedidos.findByIdAndDelete(req.params.id);
 
   if (!pedidoDeletado) {
     return res.status(404).json({ error: 'Pedido não encontrado' });

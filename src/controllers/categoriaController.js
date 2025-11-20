@@ -1,19 +1,19 @@
 const express = require('express');
 const router = express.Router();
 
-const categoriaModel = require('../models/categoria');
-const { validarCategoria, validarAtualizacaoCategoria } = require('../validators/categoriaSchema');
+const Categorias = require('../models/categoria');
+const { validarCriacao, validarAtualizacao } = require('../validators/categoriaSchema');
 const { validarId } = require('../validators/IDValidator');
 
 // GET - listar todas as categorias
 router.get('/categorias', async (req, res) => {
-  const categorias = await categoriaModel.find().populate(['Nome' , 'Descriçaõ' , 'Produto']);
+  const categorias = await Categorias.find().populate(['Nome' , 'Descriçaõ' , 'Produto']);
   res.json(categorias);
 });
 
 // GET - buscar categoria por ID
 router.get('/categorias/:id', validarId, async (req, res) => {
-  const categoria = await categoriaModel.findById(req.params.id).populate(['Nome' , 'Descriçaõ' , 'Produto']);
+  const categoria = await Categorias.findById(req.params.id).populate(['Nome' , 'Descriçaõ' , 'Produto']);
 
   if (!categoria) {
     return res.status(404).json({ error: 'Categoria não encontrada' });
@@ -23,14 +23,14 @@ router.get('/categorias/:id', validarId, async (req, res) => {
 });
 
 // POST - criar nova categoria
-router.post('/categorias', criarCategoriaSchema, async (req, res) => {
-  const novaCategoria = await categoriaModel.create(req.body);
+router.post('/categorias', validarCriacao, async (req, res) => {
+  const novaCategoria = await Categorias.create(req.body);
   res.status(201).json(novaCategoria);
 });
 
 // PUT - atualizar categoria existente
-router.put('/categorias/:id', validarId, atualizarCategoriaSchema, async (req, res) => {
-  const categoriaAtualizada = await categoriaModel.findByIdAndUpdate(
+router.put('/categorias/:id', validarId, validarAtualizacao, async (req, res) => {
+  const categoriaAtualizada = await Categorias.findByIdAndUpdate(
     req.params.id,
     req.body,
     { new: true }
@@ -45,7 +45,7 @@ router.put('/categorias/:id', validarId, atualizarCategoriaSchema, async (req, r
 
 // DELETE - deletar categoria
 router.delete('/categorias/:id', validarId, async (req, res) => {
-  const categoriaDeletada = await categoriaModel.findByIdAndDelete(req.params.id);
+  const categoriaDeletada = await Categorias.findByIdAndDelete(req.params.id);
 
   if (!categoriaDeletada) {
     return res.status(404).json({ error: 'Categoria não encontrada' });

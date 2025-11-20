@@ -1,31 +1,31 @@
 const express = require('express');
 const router = express.Router();
 
-const usuarioModel = require('../models/usuario');
-const { validarFuncionario, validarAtualizacaoFuncionario } = require('../validators/');
+const Usuarios = require('../models/usuario');
+const { validarCriacao, validarAtualizacao } = require('../validators/');
 const { validarId } = require('../validators/IDValidator');
 
 
 router.get('/usuarios', async (req, res) => {
-  const usuarios = await usuarioModel.find().populate(['Pets', 'Pedidos' , 'Agendamentos' , 'Pagamentos']);
+  const usuarios = await Usuarios.find().populate(['Pets', 'Pedidos' , 'Agendamentos' , 'Pagamentos']);
   res.json(usuarios);
 });
 
 router.get('/usuarios/:id', validarId, async (req, res) => {
-  const usuario = await usuarioModel.findById(req.params.id).populate(['Pets', 'Pedidos' , 'Agendamentos' , 'Pagamentos']);
+  const usuario = await Usuarios.findById(req.params.id).populate(['Pets', 'Pedidos' , 'Agendamentos' , 'Pagamentos']);
   if (!usuario) {
     return res.status(404).json({ error: 'usuario não encontrado' });
   }
   res.json(usuario);
 });
 
-router.post('/usuarios', CriarUsuarioSchema, async (req, res) => {
-  const novousuario = await usuarioModel.create(req.body);
+router.post('/usuarios', validarCriacao, async (req, res) => {
+  const novousuario = await Usuarios.create(req.body);
   res.status(201).json(novousuario);
 });
 
-router.put('/usuarios/:id', validarId, AtualizarUsuarioSchema, async (req, res) => {
-  const usuarioAtualizado = await usuarioModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
+router.put('/usuarios/:id', validarId, validarAtualizacao, async (req, res) => {
+  const usuarioAtualizado = await Usuarios.findByIdAndUpdate(req.params.id, req.body, { new: true });
   if (!usuarioAtualizado) {
     return res.status(404).json({ error: 'usuario não encontrado' });
   }
@@ -33,7 +33,7 @@ router.put('/usuarios/:id', validarId, AtualizarUsuarioSchema, async (req, res) 
 });
 
 router.delete('/usuarios/:id', validarId, async (req, res) => {
-  const usuarioDeletado = await usuarioModel.findByIdAndDelete(req.params.id);
+  const usuarioDeletado = await Usuarios.findByIdAndDelete(req.params.id);
   if (!usuarioDeletado) {
     return res.status(404).json({ error: 'usuario não encontrado' });
   }

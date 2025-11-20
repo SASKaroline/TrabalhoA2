@@ -1,40 +1,40 @@
 const express = require('express');
 const router = express.Router();
 
-const usuarioModel = require('../models/usuario');
-const { validarFuncionario, validarAtualizacaoFuncionario } = require('../validators/agendamentoSchema');
+const Agendamentos = require('../models/agendamento');
+const { validarCriacao, validarAtualizacao } = require('../validators/agendamentoSchema');
 const { validarId } = require('../validators/IDValidator');
 
-router.get('/usuarios', async (req, res) => {
-  const usuarios = await usuarioModel.find().populate(['Pets', 'Pedidos' , 'Agendamentos' , 'Pagamentos']);
-  res.json(usuarios);
+router.get('/agendamentos', async (req, res) => {
+  const agendamentos = await Agendamentos.find().populate(['Pets', 'Pedidos' , 'Agendamentos' , 'Pagamentos']);
+  res.json(agendamentos);
 });
 
-router.get('/usuarios/:id', validarId, async (req, res) => {
-  const usuario = await usuarioModel.findById(req.params.id).populate(['Pets', 'Pedidos' , 'Agendamentos' , 'Pagamentos']);
-  if (!usuario) {
-    return res.status(404).json({ error: 'usuario não encontrado' });
+router.get('/agendamentos/:id', validarId, async (req, res) => {
+  const agendamento = await Agendamentos.findById(req.params.id).populate(['Pets', 'Pedidos' , 'Agendamentos' , 'Pagamentos']);
+  if (!agendamento) {
+    return res.status(404).json({ error: 'agendamento não encontrado' });
   }
-  res.json(usuario);
+  res.json(agendamento);
 });
 
-router.post('/usuarios', criarAgendamentoSchema, async (req, res) => {
-  const novousuario = await usuarioModel.create(req.body);
-  res.status(201).json(novousuario);
+router.post('/agendamentos', validarCriacao, async (req, res) => {
+  const novoAgendamento = await Agendamentos.create(req.body);
+  res.status(201).json(novoAgendamento);
 });
 
-router.put('/usuarios/:id', validarId, atualizarAgendamentoSchema, async (req, res) => {
-  const usuarioAtualizado = await usuarioModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
-  if (!usuarioAtualizado) {
-    return res.status(404).json({ error: 'usuario não encontrado' });
+router.put('/agendamentos/:id', validarId, validarAtualizacao, async (req, res) => {
+  const agendamentoAtualizado = await Agendamentos.findByIdAndUpdate(req.params.id, req.body, { new: true });
+  if (!agendamentoAtualizado) {
+    return res.status(404).json({ error: 'agendamento não encontrado' });
   }
-  res.json(usuarioAtualizado);
+  res.json(agendamentoAtualizado);
 });
 
-router.delete('/usuarios/:id', validarId, async (req, res) => {
-  const usuarioDeletado = await usuarioModel.findByIdAndDelete(req.params.id);
-  if (!usuarioDeletado) {
-    return res.status(404).json({ error: 'usuario não encontrado' });
+router.delete('/agendamentos/:id', validarId, async (req, res) => {
+  const agendamentoDeletado = await Agendamentos.findByIdAndDelete(req.params.id);
+  if (!agendamentoDeletado) {
+    return res.status(404).json({ error: 'agendamento não encontrado' });
   }
   res.status(204).send();
 });

@@ -1,40 +1,40 @@
 const express = require('express');
 const router = express.Router();
 
-const usuarioModel = require('../models/usuario');
-const { validarFuncionario, validarAtualizacaoFuncionario } = require('../validators/produtoSchema');
+const Produtos = require('../models/produto');
+const { validarCriacao, validarAtualizacao } = require('../validators/produtoSchema');
 const { validarId } = require('../validators/IDValidator');
 
-router.get('/usuarios', async (req, res) => {
-  const usuarios = await usuarioModel.find().populate(['Pets', 'Pedidos' , 'Agendamentos' , 'Pagamentos']);
-  res.json(usuarios);
+router.get('/produtos', async (req, res) => {
+  const produtos = await Produtos.find().populate(['Pets', 'Pedidos' , 'Agendamentos' , 'Pagamentos']);
+  res.json(produtos);
 });
 
-router.get('/usuarios/:id', validarId, async (req, res) => {
-  const usuario = await usuarioModel.findById(req.params.id).populate(['Pets', 'Pedidos' , 'Agendamentos' , 'Pagamentos']);
-  if (!usuario) {
-    return res.status(404).json({ error: 'usuario não encontrado' });
+router.get('/produtos/:id', validarId, async (req, res) => {
+  const produto = await Produtos.findById(req.params.id).populate(['Pets', 'Pedidos' , 'Agendamentos' , 'Pagamentos']);
+  if (!produto) {
+    return res.status(404).json({ error: 'produto não encontrado' });
   }
-  res.json(usuario);
+  res.json(produto);
 });
 
-router.post('/usuarios', criarProdutoSchema, async (req, res) => {
-  const novousuario = await usuarioModel.create(req.body);
-  res.status(201).json(novousuario);
+router.post('/produtos', validarCriacao, async (req, res) => {
+  const novoproduto = await Produtos.create(req.body);
+  res.status(201).json(novoproduto);
 });
 
-router.put('/usuarios/:id', validarId, atualizarProdutoSchema, async (req, res) => {
-  const usuarioAtualizado = await usuarioModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
-  if (!usuarioAtualizado) {
-    return res.status(404).json({ error: 'usuario não encontrado' });
+router.put('/produtos/:id', validarId, validarAtualizacao, async (req, res) => {
+  const produtoAtualizado = await Produtos.findByIdAndUpdate(req.params.id, req.body, { new: true });
+  if (!produtoAtualizado) {
+    return res.status(404).json({ error: 'produto não encontrado' });
   }
-  res.json(usuarioAtualizado);
+  res.json(produtoAtualizado);
 });
 
-router.delete('/usuarios/:id', validarId, async (req, res) => {
-  const usuarioDeletado = await usuarioModel.findByIdAndDelete(req.params.id);
-  if (!usuarioDeletado) {
-    return res.status(404).json({ error: 'usuario não encontrado' });
+router.delete('/produtos/:id', validarId, async (req, res) => {
+  const produtoDeletado = await Produtos.findByIdAndDelete(req.params.id);
+  if (!produtoDeletado) {
+    return res.status(404).json({ error: 'produto não encontrado' });
   }
   res.status(204).send();
 });

@@ -2,6 +2,7 @@
 const express = require('express')
 const app = express()
 
+
 app.use(express.json())
 
 // conexão com o banco de dados
@@ -24,8 +25,8 @@ mongoose.connect(url)
   })
 
 // rotas
-const agendamentoControler = require('./controllers/agendamentoController');
-app.use(agendamentoControler);
+const agendamentoController = require('./controllers/agendamentoController');
+app.use(agendamentoController);
 
 const avaliacaoController = require('./controllers/avaliacaoController');
 app.use(avaliacaoController);

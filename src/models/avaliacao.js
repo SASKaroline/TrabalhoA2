@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const schema = new mongoose.Schema(
+const Schema = new mongoose.Schema(
   {
     nota: { type: Number, required: true, min: 1, max: 5 },
     comentario: { type: String, required: true },
@@ -25,4 +25,4 @@ const schema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model('Avaliacoes', schema);
+module.exports = mongoose.model('Avaliacoes', Schema);

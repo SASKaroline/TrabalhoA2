@@ -1,19 +1,19 @@
 const express = require('express');
 const router = express.Router();
 
-const servicoModel = require('../models/servico');
-const { validarServico, validarAtualizacaoServico } = require('../validators/servicoSchema');
+const Servicos = require('../models/servico');
+const { validarCriacao, validarAtualizacao } = require('../validators/servicoSchema');
 const { validarId } = require('../validators/IDValidator');
 
 // GET - listar todos os serviços
 router.get('/servicos', async (req, res) => {
-  const servicos = await servicoModel.find().populate(['Categoria', 'Funcionario']);
+  const servicos = await Servicos.find().populate(['Categoria', 'Funcionario']);
   res.json(servicos);
 });
 
 // GET - buscar serviço por ID
 router.get('/servicos/:id', validarId, async (req, res) => {
-  const servico = await servicoModel
+  const servico = await Servicos
     .findById(req.params.id).populate(['Categoria', 'Funcionario']);
 
   if (!servico) {
@@ -24,14 +24,14 @@ router.get('/servicos/:id', validarId, async (req, res) => {
 });
 
 // POST - criar novo serviço
-router.post('/servicos', criarServicoSchema, async (req, res) => {
-  const novoServico = await servicoModel.create(req.body);
+router.post('/servicos', validarCriacao, async (req, res) => {
+  const novoServico = await Servicos.create(req.body);
   res.status(201).json(novoServico);
 });
 
 // PUT - atualizar serviço existente
-router.put('/servicos/:id', validarId, atualizarServicoSchema, async (req, res) => {
-  const servicoAtualizado = await servicoModel.findByIdAndUpdate(
+router.put('/servicos/:id', validarId, validarAtualizacao, async (req, res) => {
+  const servicoAtualizado = await Servicos.findByIdAndUpdate(
     req.params.id,
     req.body,
     { new: true }

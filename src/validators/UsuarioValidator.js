@@ -46,35 +46,35 @@ const UsuarioSchema = yup.object().shape({
   }).nullable(),
 
   pets: yup.string()
-    .required('pets é obrigatório')
+    .nullable()
     .test(
       'idValidator',
       'ID de pets inválido',
-      value => mongoose.Types.ObjectId.isValid(value)
+      value => !value || mongoose.Types.ObjectId.isValid(value)
     ),
 
   pedidos: yup.string()
-    .required('pedidos é obrigatório')
+    .nullable()
     .test(
       'idValidator',
       'ID de pedidos inválido',
-      value => mongoose.Types.ObjectId.isValid(value)
+       value => !value || mongoose.Types.ObjectId.isValid(value)
     ),
 
   avaliacoes: yup.string()
-    .required('avaliacoes é obrigatório')
+    .nullable()
     .test(
       'idValidator',
       'ID de avaliacoes inválido',
-      value => mongoose.Types.ObjectId.isValid(value)
+      value => !value || mongoose.Types.ObjectId.isValid(value)
     ),
 
   pagamento: yup.string()
-    .required('pagamento é obrigatório')
+    .nullable()
     .test(
       'idValidator',
       'ID de pagamento inválido',
-      value => mongoose.Types.ObjectId.isValid(value)
+      value => !value || mongoose.Types.ObjectId.isValid(value)
     ),
 });
 

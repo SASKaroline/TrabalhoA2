@@ -22,22 +22,26 @@ const UsuarioSchema = new mongoose.Schema(
     pet: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Pets',
-        required: true
+        required: false,
+        default: null
     },
     pedido: {
         type: mongoose.Schema.Types.ObjectId,
         ref:'Pedidos',
-        required: true
+        required: false,
+        default: null
     },
     avaliacao: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Avaliacao',
-        required: true
+        required: false,
+        default: null
     },
     pagamento: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Pagamentos',
-        required: true
+        required: false,
+        default: null
     }
   },
   { timestamps: true }

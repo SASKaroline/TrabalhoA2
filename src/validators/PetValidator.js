@@ -33,6 +33,13 @@ const PetSchema = yup.object().shape({
       'ID de usuario inválido',
       value => mongoose.Types.ObjectId.isValid(value)
     ),
+    agendamento: yup.string()
+    .nullable()
+    .test(
+      'idValidator',
+      'ID de agendamento inválido',
+      value => !value || mongoose.Types.ObjectId.isValid(value)
+    ),
 });
 
 function validarPet(req, res, next) {

@@ -254,7 +254,8 @@ npm install
 
 Criar um .env baseado no .env.example:
 
-MONGO_URI= mongodb+srv://usuario:<db_password>@cluster0.gfi4s0j.mongodb.net/
+MONGO_URI= mongodb+srv://usuario:<db_
+password>@cluster0.gfi4s0j.mongodb.net/
 JWT_SECRET=sua_chave_secreta_aqui
 PORT=3000
 

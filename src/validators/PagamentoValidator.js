@@ -36,6 +36,13 @@ const PagamentoSchema = yup.object().shape({
       'ID de usuario inválido',
       value => mongoose.Types.ObjectId.isValid(value)
     ),
+    agendamento: yup.string()
+    .required('agendamento é obrigatório')
+    .test(
+      'idValidator',
+      'ID de agendamento inválido',
+      value => mongoose.Types.ObjectId.isValid(value)
+    ),
 });
 
 function validarPagamento(req, res, next) {
@@ -78,6 +85,13 @@ const PagamentoAtualizacaoSchema = yup.object().shape({
     .test(
       'idValidator',
       'ID de usuario inválido',
+      value => !value || mongoose.Types.ObjectId.isValid(value)
+    ),
+    agendamento: yup.string()
+    .nullable()
+    .test(
+      'idValidator',
+      'ID de agendamento inválido',
       value => !value || mongoose.Types.ObjectId.isValid(value)
     ),
 });

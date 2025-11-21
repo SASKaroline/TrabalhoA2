@@ -1,0 +1,685 @@
+{
+	"info": {
+		"_postman_id": "cea3cfaa-abd7-4d10-b441-27d5d13fac74",
+		"name": "Petshop API - Completa (Teste Sequencial)",
+		"description": "Collection de testes completa, organizada para rodar em ordem sequencial de dependência (do mais independente ao mais dependente).",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37274813"
+	},
+	"item": [
+		{
+			"name": "01. Entidades Base (Sem Dependência)",
+			"item": [
+				{
+					"name": "1. POST Categoria",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();",
+									"pm.environment.set(\"categoria_id\", data._id);",
+									"pm.test(\"Status 201: Categoria criada\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Alimentos Premium\",\n    \"descricao\": \"Rações e Petiscos de alta qualidade\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/categorias",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categorias"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. POST Produto (Depende de Categoria)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();",
+									"pm.environment.set(\"produto_id\", data._id);",
+									"pm.test(\"Status 201: Produto criado\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Ração Premium X\",\n    \"descricao\": \"Ração completa para cães adultos.\",\n    \"preco\": 120.50,\n    \"estoque\": 50,\n    \"categoria\": \"{{categoria_id}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/produtos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"produtos"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "02. Usuário e Pets (Estrutura Cliente)",
+			"item": [
+				{
+					"name": "1. POST Usuário",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();",
+									"pm.environment.set(\"usuario_id\", data._id);",
+									"pm.test(\"Status 201: Usuário criado\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Cliente Teste\",\n    \"cpf\": \"12345678901\",\n    \"email\": \"cliente.teste@petshop.com\",\n    \"senha\": \"senha123\",\n    \"telefone\": \"11987654321\",\n    \"papel\": \"cliente\",\n    \"dataNascimento\": \"1990-01-15\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/usuarios",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. POST Pet (Depende de Usuário)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();",
+									"pm.environment.set(\"pet_id\", data._id);",
+									"pm.test(\"Status 201: Pet criado\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Rex\",\n    \"especie\": \"Cachorro\",\n    \"raca\": \"Golden\",\n    \"idade\": 3,\n    \"peso\": 30.5,\n    \"usuario\": \"{{usuario_id}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/pets",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3. POST Serviço (Apenas nome e descrição)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();",
+									"pm.environment.set(\"servico_id\", data._id);",
+									"pm.test(\"Status 201: Serviço criado\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Banho\",\n    \"descricao\": \"Banho simples para pets pequenos\",\n    \"preco\": 45.00,\n    \"duracao\": 30,\n    \"agendamento\": \"{{produto_id}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/servicos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"servicos"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "03. Agendamento e Pedido (Fluxo de Compra/Serviço)",
+			"item": [
+				{
+					"name": "1. POST Agendamento (Depende de Usuário, Pet, Serviço)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();",
+									"pm.environment.set(\"agendamento_id\", data._id);",
+									"pm.test(\"Status 201: Agendamento criado\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"data\": \"2026-01-01\",\n    \"hora\": 14,\n    \"status\": \"pendente\",\n    \"pet\": \"{{pet_id}}\",\n    \"servico\": \"{{servico_id}}\",\n    \"usuario\": \"{{usuario_id}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/agendamentos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"agendamentos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. POST ItemPedido (Depende de Produto/Serviço e Pedido -> USAR ID TEMPORÁRIO)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();",
+									"pm.environment.set(\"item_pedido_id\", data._id);",
+									"pm.test(\"Status 201: ItemPedido criado\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"quantidade\": 2,\n    \"precoUnitario\": 120.50,\n    \"subtotal\": 241.00,\n    \"pedido\": \"{{agendamento_id}}\",\n    \"produto\": \"{{produto_id}}\",\n    \"servico\": null\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/itens",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"itens"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3. POST Pedido (Depende de Usuário e ItemPedido)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();",
+									"pm.environment.set(\"pedido_id\", data._id);",
+									"pm.test(\"Status 201: Pedido criado\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"total\": 241.00,\n    \"status\": \"novo\",\n    \"usuario\": \"{{usuario_id}}\",\n    \"itemPedido\": \"{{item_pedido_id}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/pedidos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pedidos"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "04. Pagamento e Avaliação (Fechamento do Ciclo)",
+			"item": [
+				{
+					"name": "1. POST Pagamento (Depende de Usuário e Pedido)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();",
+									"pm.environment.set(\"pagamento_id\", data._id);",
+									"pm.test(\"Status 201: Pagamento criado\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"valor\": 241.00,\n    \"metodo\": \"pix\",\n    \"status\": \"aprovado\",\n    \"pedido\": \"{{pedido_id}}\",\n    \"usuario\": \"{{usuario_id}}\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/pagamentos",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pagamentos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. POST Avaliação (Depende de Usuário e Produto/Serviço)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var data = pm.response.json();",
+									"pm.environment.set(\"avaliacao_id\", data._id);",
+									"pm.test(\"Status 201: Avaliação criada\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nota\": 5,\n    \"comentario\": \"Ração excelente!\",\n    \"data\": \"2025-01-01\",\n    \"usuario\": \"{{usuario_id}}\",\n    \"produto\": \"{{produto_id}}\",\n    \"servico\": null\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/avaliacoes",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"avaliacoes"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "05. Testes CRUD Secundários",
+			"item": [
+				{
+					"name": "GET Categoria",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/categorias/{{categoria_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categorias",
+								"{{categoria_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT Produto",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"preco\": 125.00\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/produtos/{{produto_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"produtos",
+								"{{produto_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Categoria",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/categorias/{{categoria_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"categorias",
+								"{{categoria_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Produto",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/produtos/{{produto_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"produtos",
+								"{{produto_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "06. Limpeza de Dados (DELETE no fim da cadeia)",
+			"item": [
+				{
+					"name": "DELETE Pagamento",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/pagamentos/{{pagamento_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pagamentos",
+								"{{pagamento_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Avaliação",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/avaliacoes/{{avaliacao_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"avaliacoes",
+								"{{avaliacao_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Pedido",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/pedidos/{{pedido_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pedidos",
+								"{{pedido_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE ItemPedido",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/itens/{{item_pedido_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"itens",
+								"{{item_pedido_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Agendamento",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/agendamentos/{{agendamento_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"agendamentos",
+								"{{agendamento_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Serviço",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/servicos/{{servico_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"servicos",
+								"{{servico_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Pet",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/pets/{{pet_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"pets",
+								"{{pet_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE Usuário",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/usuarios/{{usuario_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"usuarios",
+								"{{usuario_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000"
+		}
+	]
+}
